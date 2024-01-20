@@ -1,0 +1,22 @@
+{
+  "name": "saveapp",
+  "version": "1.0.0",
+  "description": "Web app for personal finance management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TommasoFerrario18/SaveApp.git"
+  },
+  "author": "Tommaso Ferrario",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TommasoFerrario18/SaveApp/issues"
+  },
+  "homepage": "https://github.com/TommasoFerrario18/SaveApp#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
