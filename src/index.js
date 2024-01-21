@@ -1,3 +1,5 @@
+import {signup} from "./repository.js";
+
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -19,8 +21,8 @@ app.get("/", (req, res) => {
 app.post("/signup/", urlencodedParser, (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
-  
-  
+  signup(req.body.email, req.body.password, req.body.username);
+
   res.send("Sign up");
 });
 
