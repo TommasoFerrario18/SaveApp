@@ -1,8 +1,11 @@
 import {signup} from "./repository.js";
+import express from 'express';
+import path from 'path';
+import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
 
-const express = require("express");
-const path = require("path");
-const bodyParser = require("body-parser");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
