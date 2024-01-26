@@ -29,6 +29,10 @@ app.post("/signup/", urlencodedParser, (req, res) => {
   res.send("Sign up");
 });
 
+app.get("/user/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/static/userDashboard.html"));
+});
+
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
 });
