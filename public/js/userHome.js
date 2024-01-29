@@ -65,3 +65,32 @@ for (let i = 0; i < type_frequenza.length; i++){
     el.value = opt;
     selectFrequenza.appendChild(el);
 }
+
+const movementForm = document.getElementById('movement-form');
+
+movementForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const formData = new FormData(movementForm);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+    fetch('/api/{id}/movements', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return response.json().then((error) => {
+                throw new Error(JSON.stringify(error));
+            });
+        }
+    }).then((json) => {
+        console.log(json);
+        window.location.reload();
+    }).catch((error) => {
+        console.log(error);
+    });
+});

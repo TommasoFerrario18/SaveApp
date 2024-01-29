@@ -21,15 +21,16 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/static/index.html"));
 });
 
-app.post("/signup/", urlencodedParser, (req, res) => {
+app.post("/api/signup/", urlencodedParser, async(req, res) => {
   if (!req.body) return res.sendStatus(400);
 
-  signup(req.body.email, req.body.password, req.body.username);
+  user_uid = await signup(req.body.email, req.body.password, req.body.username);
 
-  res.send("Sign up");
+  res.redirect("/user/" + user_uid);
 });
 
-app.get("/user/", (req, res) => {
+app.get("/user/:userId(\d+)", (req, res) => {
+  console.log(req.params.userId);
   res.sendFile(path.join(__dirname, "../public/static/userDashboard.html"));
 });
 
