@@ -1,16 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-import {} from 'dotenv/config'
+import {} from "dotenv/config";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
-  storageBucket:process.env.STORAGE_BUCKET,
+  storageBucket: process.env.STORAGE_BUCKET,
   messagingSenderId: process.env.MESSAGING_SENDER_ID,
   appId: process.env.APP_ID,
   measurementId: process.env.MEASUREMENT_ID,
@@ -23,4 +23,4 @@ const auth = getAuth(app);
 
 export default app;
 export { db };
-export { auth, createUserWithEmailAndPassword };
+export { auth };

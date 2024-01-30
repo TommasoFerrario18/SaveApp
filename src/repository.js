@@ -1,20 +1,29 @@
 import { db } from "./firebase.js";
-import { auth, createUserWithEmailAndPassword } from "./firebase.js";
+import { auth } from "./firebase.js";
+import { doc, setDoc } from "firebase/firestore";
+import {
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 export async function signup(email, password, username) {
   let user_uid = null;
 
+  let user = null;
+
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
-      const user = userCredential.user;
+      user = userCredential.user;
 
       user_uid = user.uid;
 
       console.log("User signed up successfully");
+      console.log("User UID: " + user.uid);
 
-      // Create a user in your Firebase firestore
-      updateUserDatabase(user, username);
+      // Create user in Firebase firestore
+      createUser(user.uid, username, email);
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -22,31 +31,41 @@ export async function signup(email, password, username) {
       // Insert error handling here
     });
 
-  console.log("User UID: " + user_uid);
   return user_uid;
 }
 
-function login(email, password) {}
+export async function login(email, password) {
+  let user_uid = null;
 
-function logout() {}
+  await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      user_uid = userCredential.user.uid;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // Insert error handling here
+    });
+
+  return user_uid;
+}
+
+function logout() {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+      console.log("User signed out successfully");
+    })
+    .catch((error) => {
+      // An error happened.
+    });
+}
 
 function deleteUser() {}
 
-function updateUserDatabase(user, username) {
-  // Update user in Firebase firestore
-  console.log("Updating user in Firebase firestore");
-
-  db.collection("users")
-    .doc(user.uid)
-    .update({
-      username: username,
-      email: user.email,
-    })
-    .then(() => {
-      console.log("Document successfully updated!");
-    })
-    .catch((error) => {
-      // The document probably doesn't exist.
-      console.error("Error updating document: ", error);
-    });
+async function createUser(id, name, email) {
+  setDoc(doc(db, "users", id), {
+    username: name,
+    email: email,
+  });
 }
