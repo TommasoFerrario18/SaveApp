@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import cookieParser from 'cookie-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,6 +11,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(express.static("public"));
+app.use(cookieParser());
 
 // Create application/json parser
 let jsonParser = bodyParser.json();
@@ -23,9 +25,9 @@ app.get("/", (req, res) => {
 });
 
 // User dashboard
-app.get("/user/:userId", (req, res) => {
-  console.log(req.params.userId);
-  res.sendFile(path.join(__dirname, "../public/static/userDashboard.html"));
+app.get("/user/", (req, res) => {
+  res.cookie('user_uid', req.cookies.user_uid);
+  res.sendFile(path.join(__dirname, "../public/static/userHome.html"));
 });
 
 // API mapping
@@ -38,7 +40,9 @@ app.post("/api/signup/", urlencodedParser, async (req, res) => {
     req.body.username
   );
 
-  res.redirect("/user/" + user_uid);
+  res.cookie('user_uid', user_uid);
+
+  res.redirect("/user/");
 });
 
 app.post("/api/login/", urlencodedParser, async (req, res) => {
@@ -46,7 +50,17 @@ app.post("/api/login/", urlencodedParser, async (req, res) => {
 
   let user_uid = await login(req.body.email, req.body.password);
 
-  res.redirect("/user/" + user_uid);
+  res.cookie('user_uid', user_uid);
+  res.redirect("/user/");
+});
+
+app.post("/api/transaction", urlencodedParser, async (req, res) => {
+  if (!req.body) return res.sendStatus(400);
+  if (!req.cookies.user_uid) return res.sendStatus(400);
+
+  let user_uid = req.cookies.user_uid;
+
+  res.send("User profile updated");
 });
 
 app.listen(3000, () => {
