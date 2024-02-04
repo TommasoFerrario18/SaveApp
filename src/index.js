@@ -1,4 +1,4 @@
-import { signup, login } from "./repository.js";
+import { signup, login } from "./userRepository.js";
 import { addExpense, getTransactions } from "./transactionRepository.js";
 import express from "express";
 import path from "path";
@@ -58,6 +58,8 @@ app.post("/api/login/", urlencodedParser, async (req, res) => {
 app.get("/api/transactions/", async (req, res) => {
   if (!req.cookies.user_uid) return res.sendStatus(400);
 
+  console.log("Request cookies: " + req.cookies.user_uid);
+
   let transactions = await getTransactions(req.cookies.user_uid);
 
   res.send(transactions);
@@ -67,7 +69,7 @@ app.post("/api/transaction", jsonParser, async (req, res) => {
   if (!req.body) return res.sendStatus(400);
   if (!req.cookies.user_uid) return res.sendStatus(400);
 
-  addExpense(req.body, req.cookies.user_uid);
+  await addExpense(req.body, req.cookies.user_uid);
 
   res.send("{status: 'success'}");
 });

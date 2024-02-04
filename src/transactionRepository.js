@@ -1,43 +1,50 @@
-import db from "./firebase.js";
+import { db } from "./firebase.js";
 import { getDoc, setDoc, doc } from "firebase/firestore";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-export function addExpense(expense, userId) {
-    let date = new Date(expense.date);
-    let year = date.getFullYear();
+export async function addExpense(expense, userId) {
+  if (!userId || !db) return;
+  let year = new Date(expense.data).getFullYear();
 
-    setDoc(doc(db, "users", userId, year, uuidv4()), expense);
+  let docRef = doc(db, "users", userId, "transactions");
+  expense.id = uuidv4();
+
+  console.log("Adding expense: " + expense);
+
+  let res = await setDoc(docRef, { [expense.id]: expense });
+
+  console.log("Expense added: " + res);
 }
 
-export function deleteExpense(id, userId) {
+export function deleteExpense(id, userId) {}
 
-}
-
-export function updateExpense(expense, userId) {
-
-}
+export function updateExpense(expense, userId) {}
 
 export async function getTransactions(userId) {
-    let transactions = [];
-    let years = [];
+  let transactions = [];
+  let years = [];
 
-    let querySnapshot = await getDoc(doc(db, "users", userId));
+  if (!userId || !db) return transactions;
 
-    querySnapshot.forEach((doc) => {
-        years.push(doc.id);
-    });
+  //   let docRef = doc(db, "users", userId);
+  //   let querySnapshot = await getDoc(docRef);
 
-    for (let year of years) {
-        let querySnapshot = await db.collection("users").doc(userId).collection(year).get();
-        querySnapshot.forEach((doc) => {
-            transactions.push(doc.data());
-        });
-    }
+  //   if (!querySnapshot.exists()) return transactions;
 
-    return transactions;
+  //   querySnapshot.data().forEach((year) => {
+  //     years.push(year);
+  //   });
+
+  //   for (let year of years) {
+  //     let querySnapshot = await getDoc(doc(db, "users", userId, year));
+  //     querySnapshot.forEach((doc) => {
+  //       transactions.push(doc.data());
+  //     });
+  //   }
+
+  console.log("Transactions: " + transactions);
+
+  return transactions;
 }
 
-export function getExpense(id, userId) {
-
-}
-
+export function getExpense(id, userId) {}

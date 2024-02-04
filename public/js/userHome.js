@@ -103,23 +103,7 @@ movementForm.addEventListener("submit", (event) => {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        return response.json().then((error) => {
-          throw new Error(JSON.stringify(error));
-        });
-      }
-    })
-    .then((json) => {
-      console.log(json);
-      window.location.reload();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  });
 });
 
 addMovement.addEventListener("click", (event) => {
