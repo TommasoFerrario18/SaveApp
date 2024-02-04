@@ -3,17 +3,17 @@ import { getDoc, setDoc, doc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 
 export async function addExpense(expense, userId) {
-  if (!userId || !db) return;
+  if (!userId || !db) return false;
+
   let year = new Date(expense.data).getFullYear();
 
-  let docRef = doc(db, "users", userId, "transactions");
   expense.id = uuidv4();
 
-  console.log("Adding expense: " + expense);
+  await setDoc(doc(db, "users", userId, "transactions", year.toString()), {
+    [expense.id]: expense,
+  });
 
-  let res = await setDoc(docRef, { [expense.id]: expense });
-
-  console.log("Expense added: " + res);
+  return true;
 }
 
 export function deleteExpense(id, userId) {}
@@ -21,30 +21,21 @@ export function deleteExpense(id, userId) {}
 export function updateExpense(expense, userId) {}
 
 export async function getTransactions(userId) {
-  let transactions = [];
-  let years = [];
+  if (!userId || !db) return [];
 
-  if (!userId || !db) return transactions;
+  let querySnapshot = await getDoc(
+    doc(
+      db,
+      "users",
+      userId,
+      "transactions",
+      new Date().getFullYear().toString()
+    )
+  );
 
-  //   let docRef = doc(db, "users", userId);
-  //   let querySnapshot = await getDoc(docRef);
+  if (!querySnapshot.exists()) return [];
 
-  //   if (!querySnapshot.exists()) return transactions;
-
-  //   querySnapshot.data().forEach((year) => {
-  //     years.push(year);
-  //   });
-
-  //   for (let year of years) {
-  //     let querySnapshot = await getDoc(doc(db, "users", userId, year));
-  //     querySnapshot.forEach((doc) => {
-  //       transactions.push(doc.data());
-  //     });
-  //   }
-
-  console.log("Transactions: " + transactions);
-
-  return transactions;
+  return querySnapshot.data();
 }
 
 export function getExpense(id, userId) {}

@@ -5,6 +5,7 @@ import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
+import { url } from "inspector";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,8 +58,6 @@ app.post("/api/login/", urlencodedParser, async (req, res) => {
 
 app.get("/api/transactions/", async (req, res) => {
   if (!req.cookies.user_uid) return res.sendStatus(400);
-
-  console.log("Request cookies: " + req.cookies.user_uid);
 
   let transactions = await getTransactions(req.cookies.user_uid);
 
