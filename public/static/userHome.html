@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./../style/output.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+  </head>
+
+  <body onload="onLoad()">
+    <div class="md:container md:mx-auto bg-emerald-700">
+      <nav>
+        <div class="flex justify-between">
+          <div class="flex p-4">
+            <img src="./../images/logo.png" alt="logo" class="h-10 w-10" />
+            <a href="#" class="p-4">Home</a>
+          </div>
+          <div class="p-4 flex items-center">
+            <a href="#" class="p-4">Account</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div>
+      <div class="flex justify-center">
+        <div class="w-1/2">
+          <h1 class="text-6xl text-center">Welcome to your dashboard!</h1>
+          <p class="text-center text-xl mt-5">
+            Here you can view your current tasks and add new ones.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-screen flex items-center justify-center">
+      <div class="border-solid border-gray-600 rounded-md">
+        <div id="categoryPlot" style="width: 100%; max-width: 700px"></div>
+      </div>
+    </div>
+
+    <div
+      id="successModal"
+      tabindex="-1"
+      aria-hidden="true"
+      id="error-model"
+      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+    >
+      <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div
+          class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+        >
+          <button
+            type="button"
+            class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-toggle="successModal"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+          <div
+            class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 p-2 flex items-center justify-center mx-auto mb-3.5"
+          >
+            <svg
+              aria-hidden="true"
+              class="w-8 h-8 text-green-500 dark:text-green-400"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="sr-only">Success</span>
+          </div>
+          <p class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            Successfully removed product.
+          </p>
+          <button
+            data-modal-toggle="successModal"
+            type="button"
+            class="py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:focus:ring-primary-900"
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--Show Diagram here-->
+    <div class="flex items-center justify-center">
+      <div class="md:flex">
+        <ul
+          class="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0"
+        >
+          <li>
+            <a
+              href="#"
+              class="inline-flex items-center px-4 py-3 text-white bg-blue-700 rounded-lg active w-full dark:bg-blue-600"
+              aria-current="page"
+            >
+              <svg
+                class="w-4 h-4 me-2 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"
+                />
+              </svg>
+              Profile
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <svg
+                class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 18 18"
+              >
+                <path
+                  d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"
+                />
+              </svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <svg
+                class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"
+                />
+              </svg>
+              Settings
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="inline-flex items-center px-4 py-3 rounded-lg hover:text-gray-900 bg-gray-50 hover:bg-gray-100 w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
+              <svg
+                class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M7.824 5.937a1 1 0 0 0 .726-.312 2.042 2.042 0 0 1 2.835-.065 1 1 0 0 0 1.388-1.441 3.994 3.994 0 0 0-5.674.13 1 1 0 0 0 .725 1.688Z"
+                />
+                <path
+                  d="M17 7A7 7 0 1 0 3 7a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V7a5 5 0 1 1 10 0v7.083A2.92 2.92 0 0 1 12.083 17H12a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a1.993 1.993 0 0 0 1.722-1h.361a4.92 4.92 0 0 0 4.824-4H17a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3Z"
+                />
+              </svg>
+              Contact
+            </a>
+          </li>
+          <li>
+            <a
+              class="inline-flex items-center px-4 py-3 text-gray-400 rounded-lg cursor-not-allowed bg-gray-50 w-full dark:bg-gray-800 dark:text-gray-500"
+            >
+              <svg
+                class="w-4 h-4 me-2 text-gray-400 dark:text-gray-500"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"
+                />
+              </svg>
+              Disabled</a
+            >
+          </li>
+        </ul>
+        <div
+          class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full"
+        >
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
+            Profile Tab
+          </h3>
+          <p class="mb-2">
+            This is some placeholder content the Profile tab's associated
+            content, clicking another tab will toggle the visibility of this one
+            for the next.
+          </p>
+          <p>
+            The tab JavaScript swaps classes to control the content visibility
+            and styling.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center">
+      <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul
+          class="flex flex-wrap -mb-px text-sm font-medium text-center"
+          id="default-tab"
+          data-tabs-toggle="#default-tab-content"
+          role="tablist"
+        >
+          <li class="me-2" role="presentation">
+            <button
+              class="inline-block p-4 border-b-2 rounded-t-lg"
+              id="profile-tab"
+              data-tabs-target="#profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+            >
+              Profile
+            </button>
+          </li>
+          <li class="me-2" role="presentation">
+            <button
+              class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              id="dashboard-tab"
+              data-tabs-target="#dashboard"
+              type="button"
+              role="tab"
+              aria-controls="dashboard"
+              aria-selected="false"
+            >
+              Dashboard
+            </button>
+          </li>
+          <li class="me-2" role="presentation">
+            <button
+              class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              id="settings-tab"
+              data-tabs-target="#settings"
+              type="button"
+              role="tab"
+              aria-controls="settings"
+              aria-selected="false"
+            >
+              Settings
+            </button>
+          </li>
+          <li role="presentation">
+            <button
+              class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+              id="contacts-tab"
+              data-tabs-target="#contacts"
+              type="button"
+              role="tab"
+              aria-controls="contacts"
+              aria-selected="false"
+            >
+              Contacts
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div id="default-tab-content">
+        <div
+          class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+          id="profile"
+          role="tabpanel"
+          aria-labelledby="profile-tab"
+        >
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is some placeholder content the
+            <strong class="font-medium text-gray-800 dark:text-white"
+              >Profile tab's associated content</strong
+            >. Clicking another tab will toggle the visibility of this one for
+            the next. The tab JavaScript swaps classes to control the content
+            visibility and styling.
+          </p>
+        </div>
+        <div
+          class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+          id="dashboard"
+          role="tabpanel"
+          aria-labelledby="dashboard-tab"
+        >
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is some placeholder content the
+            <strong class="font-medium text-gray-800 dark:text-white"
+              >Dashboard tab's associated content</strong
+            >. Clicking another tab will toggle the visibility of this one for
+            the next. The tab JavaScript swaps classes to control the content
+            visibility and styling.
+          </p>
+        </div>
+        <div
+          class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+          id="settings"
+          role="tabpanel"
+          aria-labelledby="settings-tab"
+        >
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is some placeholder content the
+            <strong class="font-medium text-gray-800 dark:text-white"
+              >Settings tab's associated content</strong
+            >. Clicking another tab will toggle the visibility of this one for
+            the next. The tab JavaScript swaps classes to control the content
+            visibility and styling.
+          </p>
+        </div>
+        <div
+          class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+          id="contacts"
+          role="tabpanel"
+          aria-labelledby="contacts-tab"
+        >
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is some placeholder content the
+            <strong class="font-medium text-gray-800 dark:text-white"
+              >Contacts tab's associated content</strong
+            >. Clicking another tab will toggle the visibility of this one for
+            the next. The tab JavaScript swaps classes to control the content
+            visibility and styling.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="items-center justify-center mx-10">
+      <div class="relative overflow-x-auto">
+        <table
+          class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+          id="transactions-table"
+        >
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="px-6 py-3">Descrizione</th>
+              <th scope="col" class="px-6 py-3">Importo</th>
+              <th scope="col" class="px-6 py-3">Data</th>
+              <th scope="col" class="px-6 py-3">Categoria</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--Form aggiungi movimento-->
+    <div
+      class="h-screen flex items-center justify-center"
+      id="form-movement"
+      style="visibility: hidden"
+    >
+      <div
+        class="bg-white-300 z-50 w-1/2 content-center rounded-md overflow-hidden shadow-lg"
+      >
+        <div class="p-5">
+          <p class="block tracking-wide text-black-700 font-bold mb-2 text-lg">
+            Aggiungi un movimento
+          </p>
+          <form action="/api/transaction" method="post" id="movement-form">
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="Importo"
+                >
+                  Importo
+                </label>
+                <input
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                  id="Importo"
+                  name="Importo"
+                  type="number"
+                  placeholder="0.0"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              <div class="w-full md:w-1/2 px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="Valuta"
+                >
+                  Valuta
+                </label>
+                <div class="relative">
+                  <select
+                    class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="Valuta"
+                    name="Valuta"
+                  ></select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                  >
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="Descrizione"
+                >
+                  Descrizione
+                </label>
+                <input
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="Descrizione"
+                  name="Descrizione"
+                  type="text"
+                  placeholder="Descrizione"
+                />
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="data"
+                >
+                  Data
+                </label>
+                <input
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="data"
+                  name="data"
+                  type="date"
+                />
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="Budget"
+                >
+                  Budget
+                </label>
+                <div class="relative">
+                  <select
+                    class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="Budget"
+                    name="Budget"
+                    name="Budget"
+                  ></select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                  >
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="tag"
+                >
+                  Tag
+                </label>
+                <div class="relative">
+                  <select
+                    class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="tag"
+                    name="tag"
+                  ></select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                  >
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="md:flex md:items-center mb-6">
+              <div class="md:w-1/3"></div>
+              <label class="md:w-2/3 block text-black-500 font-bold">
+                <input
+                  class="mr-2 leading-tight"
+                  type="checkbox"
+                  name="abbonamento"
+                  id="abbonamento"
+                />
+                <span class=""> È un movimento ricorrente? </span>
+              </label>
+            </div>
+            <div
+              class="flex flex-wrap -mx-3 mb-6"
+              style="visibility: hidden"
+              id="frequenzaDiv"
+            >
+              <div class="w-full px-3">
+                <label
+                  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  for="frequenza"
+                >
+                  Frequenza
+                </label>
+                <div class="relative">
+                  <select
+                    class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="frequenza"
+                    name="frequenza"
+                  ></select>
+                  <div
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                  >
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <input
+              type="submit"
+              value="Aggiungi"
+              class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
+            />
+            <button
+              class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded"
+              type="button"
+              id="button-back"
+            >
+              Annulla
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="group fixed bottom-20 right-20 p-2 flex items-end justify-end w-24 h-24"
+      id="fab-add-movement"
+    >
+      <div
+        class="text-white shadow-xl flex items-center justify-center p-5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 z-50 absolute"
+      >
+        <span class="material-symbols-outlined">add</span>
+      </div>
+    </div>
+
+    <script src="./../js/userHome.js"></script>
+    <script src="./../js/fetchData.js"></script>
+  </body>
+</html>
