@@ -1,6 +1,6 @@
 import { db } from "./firebase.js";
 import { auth } from "./firebase.js";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import {
   signOut,
   signInWithEmailAndPassword,
@@ -18,9 +18,6 @@ export async function signup(email, password, username) {
       user = userCredential.user;
 
       user_uid = user.uid;
-
-      console.log("User signed up successfully");
-      console.log("User UID: " + user.uid);
 
       // Create user in Firebase firestore
       createUser(user.uid, username, email);
@@ -50,18 +47,19 @@ export async function login(email, password) {
   return user_uid;
 }
 
-function logout() {
+export function logout() {
   signOut(auth)
     .then(() => {
-      // Sign-out successful.
-      console.log("User signed out successfully");
+      return "User signed out successfully";
     })
     .catch((error) => {
-      // An error happened.
+      return error;
     });
 }
 
-function deleteUser() {}
+export function deleteUser(userId) {
+  deleteDoc(doc(db, "users", userId));
+}
 
 async function createUser(id, name, email) {
   setDoc(doc(db, "users", id), {
