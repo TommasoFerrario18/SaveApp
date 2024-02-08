@@ -23,7 +23,7 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // Home page
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/static/index.html"));
+  res.sendFile(path.join(__dirname, "../public/static/home.html"));
 });
 
 // User dashboard
