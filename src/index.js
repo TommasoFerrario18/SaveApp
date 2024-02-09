@@ -28,8 +28,10 @@ app.get("/", (req, res) => {
 
 // User dashboard
 app.get("/user/", (req, res) => {
+  if (!req.cookies.user_uid) return res.redirect("/");
+
   res.cookie("user_uid", req.cookies.user_uid);
-  res.sendFile(path.join(__dirname, "../public/static/userHome.html"));
+  res.sendFile(path.join(__dirname, "../public/static/dashboard.html"));
 });
 
 // API mapping
