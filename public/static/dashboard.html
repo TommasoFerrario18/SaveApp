@@ -112,53 +112,85 @@
           <div
             class="text-md font-medium text-center text-gray-700 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700"
           >
-            <ul class="flex flex-wrap justify-center -mb-px">
-              <li class="me-2">
+            <ul
+              class="flex flex-wrap justify-center -mb-px"
+              role="tablist"
+            >
+              <li class="me-2" role="presentation">
                 <a
+                  id="current-month-btn-spese"
                   href=""
                   class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                  >Current Month</a
-                >
+                ></a>
               </li>
-              <li class="me-2">
+              <li class="me-2" role="presentation">
                 <a
+                  id="current-year-btn-spese"
                   href=""
                   class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
                   aria-current="page"
-                  >Current Year</a
-                >
+                ></a>
               </li>
-              <li class="me-2">
+              <li class="me-2" role="presentation">
                 <a
+                  id="total-btn-spese"
                   href=""
                   class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                   >Totale</a
                 >
               </li>
             </ul>
-
-            <div id="div-spese">
-              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table
-                  id="transactions-table"
-                  class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                >
-                  <thead
-                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          </div>
+          <div class="flex items-center justify-center my-12">
+            <div
+              class="max-w-2xl rounded overflow-hidden shadow-lg w-9/12 h-5/6 divide-y bg-blue-300"
+            >
+              <div class="mx-16 my-4">
+                <p>
+                  <span
+                    class="text-2xl font-medium text-center text-gray-800 dark:text-gray-800"
+                    >Spese</span
                   >
-                    <tr>
-                      <th scope="col" class="px-6 py-3">Descrizione</th>
-                      <th scope="col" class="px-6 py-3">Importo</th>
-                      <th scope="col" class="px-6 py-3">Tag</th>
-                      <th scope="col" class="px-6 py-3">Data</th>
-                      <th scope="col" class="px-6 py-3">
-                        <span class="sr-only">Edit</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
+                </p>
+                <p id="spese-tot" class="px-4">100</p>
+              </div>
+              <div>
+                <div class="grid grid-cols-4 gap-4 mx-16 my-4">
+                  <div class="col-start-1 col-end-3">
+                    <p>
+                      <span
+                        class="text-lg font-medium text-center text-gray-800 dark:text-gray-800"
+                        >Uscite</span
+                      >
+                    </p>
+                    <p id="uscite">Uscite</p>
+                  </div>
+                  <div class="col-end-7 col-span-2">
+                    <span
+                      class="text-lg font-medium text-center text-gray-800 dark:text-gray-800"
+                      >Entrate</span
+                    >
+                    <p id="entrate">Entrate</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="grid grid-cols-4 gap-4 mx-16 my-4">
+                  <p class="col-start-1 col-end-3">
+                    <span
+                      id="max-cat"
+                      class="text-lg font-medium text-center text-gray-800 dark:text-gray-800"
+                      >Categoria</span
+                    >
+                  </p>
+                  <p class="col-end-7 col-span-2">
+                    <span
+                      id="importo-max-cat"
+                      class="text-md font-medium text-center text-gray-800 dark:text-gray-800"
+                      >Importo categoria</span
+                    >
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -173,6 +205,7 @@
             <ul class="flex flex-wrap justify-center -mb-px">
               <li class="me-2">
                 <a
+                  id="current-month-btn-grafici"
                   href=""
                   class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                   >Current Month</a
@@ -180,6 +213,7 @@
               </li>
               <li class="me-2">
                 <a
+                  id="current-year-btn-grafici"
                   href=""
                   class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
                   aria-current="page"
@@ -188,6 +222,7 @@
               </li>
               <li class="me-2">
                 <a
+                  id="total-btn-grafici"
                   href=""
                   class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                   >Totale</a
@@ -196,6 +231,38 @@
             </ul>
           </div>
           <div id="plot"></div>
+        </div>
+      </section>
+
+      <section id="storico">
+        <div id="div-spese" class="container mx-auto my-28 z-10">
+          <p>
+            <span
+              class="text-2xl font-medium text-center text-gray-800 dark:text-gray-800"
+              >Storico Spese</span
+            >
+          </p>
+          <div class="relative overflow-x-auto shadow-md sm:rounded-lg my-2">
+            <table
+              id="transactions-table"
+              class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            >
+              <thead
+                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+              >
+                <tr>
+                  <th scope="col" class="px-6 py-3">Descrizione</th>
+                  <th scope="col" class="px-6 py-3">Importo</th>
+                  <th scope="col" class="px-6 py-3">Tag</th>
+                  <th scope="col" class="px-6 py-3">Data</th>
+                  <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
       </section>
     </div>
@@ -255,7 +322,6 @@
                     placeholder="0.0"
                     min="0"
                     step="0.01"
-                    
                   />
                 </div>
                 <div class="w-full md:w-1/2 px-3">
@@ -394,10 +460,7 @@
                   <span class=""> È un movimento ricorrente? </span>
                 </label>
               </div>
-              <div
-                class="flex flex-wrap -mx-3 mb-6 hidden"
-                id="frequenzaDiv"
-              >
+              <div class="flex flex-wrap -mx-3 mb-6 hidden" id="frequenzaDiv">
                 <div class="w-full px-3">
                   <label
                     class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"

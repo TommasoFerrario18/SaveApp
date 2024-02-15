@@ -102,3 +102,14 @@ checkbox.addEventListener("change", () => {
     frequenzaDiv.classList.add("hidden");
   }
 });
+
+let month = new Date().toLocaleString('default', { month: 'long' });
+month = month.charAt(0).toUpperCase() + month.slice(1);
+
+let year = new Date().getFullYear();
+
+document.getElementById("current-month-btn-spese").innerHTML = month;
+document.getElementById("current-year-btn-spese").innerHTML = year;
+
+document.getElementById("current-month-btn-grafici").innerHTML = month;
+document.getElementById("current-year-btn-grafici").innerHTML = year;
