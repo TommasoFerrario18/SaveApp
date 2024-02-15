@@ -113,7 +113,7 @@ formLogin.addEventListener("submit", (e) => {
     return;
   }
 
-  form.submit();
+  formLogin.submit();
 });
 formSignup.addEventListener("submit", (e) => {
   e.preventDefault();

@@ -113,3 +113,22 @@ document.getElementById("current-year-btn-spese").innerHTML = year;
 
 document.getElementById("current-month-btn-grafici").innerHTML = month;
 document.getElementById("current-year-btn-grafici").innerHTML = year;
+
+// Ottieni tutte le schede e i relativi contenuti
+const tabs = document.querySelectorAll('.tab-input');
+const tabContents = document.querySelectorAll('.tab-content');
+
+// Aggiungi un listener di eventi per ogni scheda
+tabs.forEach(tab => {
+    tab.addEventListener('change', () => {
+        // Nascondi tutti i contenuti delle schede
+        tabContents.forEach(content => {
+            content.style.display = 'none';
+        });
+
+        // Mostra solo il contenuto della scheda selezionata
+        const selectedTabId = tab.getAttribute('id');
+        const selectedContent = document.querySelector(`.tab-content[id^="${selectedTabId}"]`);
+        selectedContent.style.display = 'block';
+    });
+});

@@ -120,6 +120,9 @@ function createGraph(data) {
   Plotly.newPlot("plot", graphData, layout);
 }
 
+function fillCards(data) {
+}
+
 function onLoad() {
   fetch("/api/transactions/", {
     method: "GET",
@@ -133,6 +136,7 @@ function onLoad() {
 
       fillTable(data);
       createGraph(data);
+      fillCards(data);
     })
     .catch((err) => {
       console.log(err);
