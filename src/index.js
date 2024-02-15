@@ -23,13 +23,15 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // Home page
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/static/index.html"));
+  res.sendFile(path.join(__dirname, "../public/static/home.html"));
 });
 
 // User dashboard
 app.get("/user/", (req, res) => {
+  if (!req.cookies.user_uid) return res.redirect("/");
+
   res.cookie("user_uid", req.cookies.user_uid);
-  res.sendFile(path.join(__dirname, "../public/static/userHome.html"));
+  res.sendFile(path.join(__dirname, "../public/static/dashboard.html"));
 });
 
 // API mapping
