@@ -56,16 +56,19 @@ function createImporto(importo, valuta) {
 function fillTable(data) {
   let table = document.getElementById("transactions-table");
   for (let transactionId in data) {
-    let row = table.insertRow();
+    let row = document.createElement("tr");
 
-    let description = row.insertCell(0);
-    let amount = row.insertCell(1);
-    let date = row.insertCell(3);
-    let category = row.insertCell(2);
-    let edit = row.insertCell(4);
+    let description = document.createElement("td");
+    let amount = document.createElement("td");
+    let date = document.createElement("td");
+    let category = document.createElement("td");
+    let edit = document.createElement("td");
 
     description.innerHTML = data[transactionId].Descrizione;
-    amount.innerHTML = createImporto(data[transactionId].Importo, data[transactionId].Valuta)
+    amount.innerHTML = createImporto(
+      data[transactionId].Importo,
+      data[transactionId].Valuta
+    );
     date.innerHTML = data[transactionId].data;
     category.innerHTML = data[transactionId].tag;
 
@@ -85,34 +88,63 @@ function fillTable(data) {
     edit.classList.add("px-6", "py-3", "text-right");
 
     edit.appendChild(createEditLink(transactionId));
+
+    row.appendChild(description);
+    row.appendChild(amount);
+    row.appendChild(category);
+    row.appendChild(date);
+    row.appendChild(edit);
+
+    table.appendChild(row);
   }
 }
 
+// Sum of expenses by category
+function sumByCategory(data) {
+  let Categories = new Set();
+
+  for (let transactionId in data) {
+    Categories.add(data[transactionId].tag);
+  }
+
+  tagsLabels = Array.from(Categories);
+  let tagsAmounts = {};
+
+  for (let tag of tagsLabels) {
+    tagsAmounts[tag] = 0;
+  }
+
+  for (let transactionId in data) {
+    tagsAmounts[data[transactionId].tag] += data[transactionId].Importo;
+  }
+
+  return tagsAmounts;
+}
+
+function getMaxTag(tagsAmounts) {
+  let max = 0;
+  let maxTag = "";
+
+  for (let tag in tagsAmounts) {
+    if (tagsAmounts[tag] > max) {
+      max = tagsAmounts[tag];
+      maxTag = tag;
+    }
+  }
+
+  return maxTag;
+}
+
 function createGraph(data) {
-  let tags = new Set();
-  for (let transactionId in data) {
-    tags.add(data[transactionId].tag);
-  }
-  tags = Array.from(tags);
+  const tagAmounts = sumByCategory(data);
 
-  console.log(tags);
-
-  const tagAmounts = {};
-  for (let tag of tags) {
-    tagAmounts[tag] = 0;
-  }
-
-  for (let transactionId in data) {
-    tagAmounts[data[transactionId].tag] += data[transactionId].Importo;
-  }
+  let tags = new Array(Object.keys(tagAmounts));
 
   let xData = new Array(tags.length);
 
   for (let i = 0; i < tags.length; i++) {
     xData[i] = tagAmounts[Array.from(tags)[i]];
   }
-
-  console.log(xData);
 
   const layout = { title: "Expenses by category" };
   const graphData = [{ labels: tags, values: xData, hole: 0.6, type: "pie" }];
@@ -121,6 +153,28 @@ function createGraph(data) {
 }
 
 function fillCards(data) {
+  let tagsAmounts = sumByCategory(data);
+
+  let totalExpenses = 0;
+  let totalIncome = 0;
+  for (let tag in tagsAmounts) {
+    if (tag !== "Entrata") {
+      totalExpenses += Number(tagsAmounts[tag]);
+    } else {
+      totalIncome += Number(tagsAmounts[tag]);
+    }
+  }
+
+  let totalBalance = totalIncome - totalExpenses;
+
+  document.getElementById("spese-tot").innerHTML = totalBalance + "€";
+  document.getElementById("uscite").innerHTML = totalExpenses + "€";
+  document.getElementById("entrate").innerHTML = totalIncome + "€";
+
+  let maxTag = getMaxTag(tagsAmounts);
+  document.getElementById("max-tag").innerHTML = maxTag;
+  document.getElementById("importo-max-tag").innerHTML =
+    tagsAmounts[maxTag] + "€";
 }
 
 function onLoad() {
@@ -130,10 +184,6 @@ function onLoad() {
   })
     .then((res) => res.json())
     .then((data) => {
-      data.forEach((transaction) => {
-        transaction.Importo = Number(transaction.Importo);
-      });
-
       fillTable(data);
       createGraph(data);
       fillCards(data);
