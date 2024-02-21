@@ -53,6 +53,37 @@ function createImporto(importo, valuta) {
   return importoValue;
 }
 
+function createDeleteButton(transactionId) {
+  let deleteButton = document.createElement("button");
+  deleteButton.innerHTML = "Delete";
+  deleteButton.classList.add(
+    "px-6",
+    "py-3",
+    "font-medium",
+    "text-red-600",
+    "dark:text-red-500",
+    "hover:underline"
+  );
+
+  deleteButton.onclick = function () {
+    fetch("/api/transactions/" + transactionId, {
+      method: "DELETE",
+      credentials: "same-origin",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Error deleting transaction");
+        // errorModal.classList.remove("hidden");
+      });
+  };
+
+  return deleteButton;
+}
+
 function fillTable(data) {
   let table = document.getElementById("transactions-table");
   for (let transactionId in data) {
@@ -63,6 +94,7 @@ function fillTable(data) {
     let date = document.createElement("td");
     let category = document.createElement("td");
     let edit = document.createElement("td");
+    let deleteTable = document.createElement("td");
 
     description.innerHTML = data[transactionId].Descrizione;
     amount.innerHTML = createImporto(
@@ -88,12 +120,14 @@ function fillTable(data) {
     edit.classList.add("px-6", "py-3", "text-right");
 
     edit.appendChild(createEditLink(transactionId));
+    deleteTable.appendChild(createDeleteButton(transactionId));
 
     row.appendChild(description);
     row.appendChild(amount);
     row.appendChild(category);
     row.appendChild(date);
     row.appendChild(edit);
+    row.appendChild(deleteTable);
 
     table.appendChild(row);
   }
