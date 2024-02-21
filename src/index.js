@@ -72,7 +72,7 @@ app.post("/api/transaction", jsonParser, async (req, res) => {
 
   await addExpense(req.body, req.cookies.user_uid);
 
-  res.send("{status: 'success'}");
+  res.redirect("/user/");
 });
 
 app.listen(3000, () => {
