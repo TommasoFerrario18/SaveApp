@@ -14,12 +14,9 @@ export async function signup(email, password, username) {
 
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in
       user = userCredential.user;
 
       user_uid = user.uid;
-
-      // Create user in Firebase firestore
       createUser(user.uid, username, email);
     })
     .catch((error) => {
