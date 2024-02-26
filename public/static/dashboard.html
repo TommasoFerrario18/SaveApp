@@ -78,36 +78,36 @@
       </header>
     </section>
 
-    <div id="body">
-      <section id="fab-spesa">
-        <div
-          class="z-30 flex flex-col fixed top-screen left-screen w-screen h-screen justify-end items-end p-60"
+    <section id="fab-spesa" class="container mx-auto">
+      <div
+        class="flex flex-col h-fit justify-end items-end right-0 px-4 pt-12 z-10"
+      >
+        <button
+        id="btn-add-movement"
+        type="button"
+        class="text-blue-700 border border-blue-700 bg-blue-700 hover:bg-blue-300 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
+      >
+        <svg
+          class="w-[48px] h-[48px] text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
         >
-          <button
-            id="btn-add-movement"
-            type="button"
-            class="text-blue-700 border border-blue-700 bg-blue-700 hover:bg-blue-300 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
-          >
-            <svg
-              class="w-[48px] h-[48px] text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="3"
-                d="M5 12h14m-7 7V5"
-              />
-            </svg>
-            <span class="sr-only">Aggiungi Spesa</span>
-          </button>
-        </div>
-      </section>
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+            d="M5 12h14m-7 7V5"
+          />
+        </svg>
+        <span class="px-4 text-lg text-white">Aggiungi Spesa</span>
+      </button>    
+      </div>
+    </section>
 
+    <div id="body">
       <section id="spese">
         <div class="container mx-auto my-28 z-10">
           <div
@@ -793,17 +793,17 @@
               Elimina spesa
             </p>
             <br>
-            <form action="/api/transaction" method="post" id="delete-movement">
+            <form action="/api/transaction" method="post" id="form-delete-movement">
               <input
                 type="hidden"
                 id="id-movement"
-                name="id-movement"
+                name="id"
                 value=""
               />
               <input
                 type="hidden"
-                id="id-movement"
-                name="id-movement"
+                id="year-movement"
+                name="year"
                 value=""
               />
               <p class="text-left">Sei sicuro di voler eliminare la spesa?</p>

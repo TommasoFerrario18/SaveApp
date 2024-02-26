@@ -1,5 +1,5 @@
 import { signup, login } from "./userRepository.js";
-import { addExpense, getTransactions } from "./transactionRepository.js";
+import { addExpense, getTransactions, deleteExpense } from "./transactionRepository.js";
 import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
@@ -73,6 +73,16 @@ app.post("/api/transaction", jsonParser, async (req, res) => {
   await addExpense(req.body, req.cookies.user_uid);
 
   res.redirect("/user/");
+});
+
+app.delete("/api/transactions/:year/:id", async (req, res) => {
+  if (!req.cookies.user_uid) return res.sendStatus(400);
+
+  let document = await deleteExpense(req.params.id, req.params.year, req.cookies.user_uid);
+
+  console.log(document);
+
+  res.sendStatus(200);
 });
 
 app.listen(3000, () => {
