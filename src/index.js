@@ -1,11 +1,20 @@
+/**
+ * @file This file contains the main server code for the SaveApp application.
+ * It imports various modules, sets up the server, and defines the routes and handlers for different endpoints.
+ * The server listens on port 3000.
+ */
+
 import { signup, login } from "./userRepository.js";
-import { addExpense, getTransactions, deleteExpense } from "./transactionRepository.js";
+import {
+  addExpense,
+  getTransactions,
+  deleteExpense,
+} from "./transactionRepository.js";
 import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
-import { url } from "inspector";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,18 +24,27 @@ const app = express();
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// Create application/json parser
 let jsonParser = bodyParser.json();
 
-// create application/x-www-form-urlencoded parser
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-// Home page
+/**
+ * GET request handler for the root endpoint ("/").
+ * Sends the home.html file to the client.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/static/home.html"));
 });
 
-// User dashboard
+/**
+ * GET request handler for the "/user/" endpoint.
+ * If the user is not logged in, redirects to the root endpoint ("/").
+ * If the user is logged in, sends the dashboard.html file to the client.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.get("/user/", (req, res) => {
   if (!req.cookies.user_uid) return res.redirect("/");
 
@@ -34,7 +52,13 @@ app.get("/user/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/static/dashboard.html"));
 });
 
-// API mapping
+/**
+ * POST request handler for the "/api/signup/" endpoint.
+ * Parses the request body and calls the signup function from the userRepository module.
+ * Sets the user_uid cookie and redirects to the "/user/" endpoint.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.post("/api/signup/", urlencodedParser, async (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
@@ -49,6 +73,13 @@ app.post("/api/signup/", urlencodedParser, async (req, res) => {
   res.redirect("/user/");
 });
 
+/**
+ * POST request handler for the "/api/login/" endpoint.
+ * Parses the request body and calls the login function from the userRepository module.
+ * Sets the user_uid cookie and redirects to the "/user/" endpoint.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.post("/api/login/", urlencodedParser, async (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
@@ -58,6 +89,14 @@ app.post("/api/login/", urlencodedParser, async (req, res) => {
   res.redirect("/user/");
 });
 
+/**
+ * GET request handler for the "/api/transactions/" endpoint.
+ * If the user is not logged in, sends a 400 status code.
+ * Calls the getTransactions function from the transactionRepository module.
+ * Sends the transactions data as the response.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.get("/api/transactions/", async (req, res) => {
   if (!req.cookies.user_uid) return res.sendStatus(400);
 
@@ -66,6 +105,14 @@ app.get("/api/transactions/", async (req, res) => {
   res.send(transactions);
 });
 
+/**
+ * POST request handler for the "/api/transaction" endpoint.
+ * Parses the request body and checks if the user is logged in.
+ * Calls the addExpense function from the transactionRepository module.
+ * Redirects to the "/user/" endpoint.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.post("/api/transaction", jsonParser, async (req, res) => {
   if (!req.body) return res.sendStatus(400);
   if (!req.cookies.user_uid) return res.sendStatus(400);
@@ -75,16 +122,32 @@ app.post("/api/transaction", jsonParser, async (req, res) => {
   res.redirect("/user/");
 });
 
+/**
+ * DELETE request handler for the "/api/transactions/:year/:id" endpoint.
+ * If the user is not logged in, sends a 400 status code.
+ * Calls the deleteExpense function from the transactionRepository module.
+ * Sends a 200 status code as the response.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.delete("/api/transactions/:year/:id", async (req, res) => {
   if (!req.cookies.user_uid) return res.sendStatus(400);
 
-  let document = await deleteExpense(req.params.id, req.params.year, req.cookies.user_uid);
+  let document = await deleteExpense(
+    req.params.id,
+    req.params.year,
+    req.cookies.user_uid
+  );
 
   console.log(document);
 
   res.sendStatus(200);
 });
 
+/**
+ * Starts the server and listens on port 3000.
+ * Logs a message to the console when the server is listening.
+ */
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
 });
