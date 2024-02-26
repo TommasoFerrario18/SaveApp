@@ -4,7 +4,7 @@
  * The server listens on port 3000.
  */
 
-import { signup, login } from "./userRepository.js";
+import { signup, login, logout } from "./userRepository.js";
 import {
   addExpense,
   getTransactions,
@@ -50,6 +50,23 @@ app.get("/user/", (req, res) => {
 
   res.cookie("user_uid", req.cookies.user_uid);
   res.sendFile(path.join(__dirname, "../public/static/dashboard.html"));
+});
+
+/**
+ * GET request handler for the "/api/logout/" endpoint.
+ * If the user is not logged in, sends a 400 status code.
+ * Calls the logout function from the userRepository module.
+ * Clears the user_uid cookie and redirects to the root endpoint ("/").
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+app.get("/api/logout/", (req, res) => {
+  if (!req.cookies.user_uid) return res.sendStatus(400);
+
+  let user = logout();
+
+  res.clearCookie("user_uid");
+  res.redirect("/");
 });
 
 /**

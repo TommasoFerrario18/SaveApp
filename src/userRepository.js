@@ -44,8 +44,8 @@ export async function login(email, password) {
   return user_uid;
 }
 
-export function logout() {
-  signOut(auth)
+export async function logout() {
+  await signOut(auth)
     .then(() => {
       return "User signed out successfully";
     })
