@@ -1,5 +1,9 @@
 // TODO: Fix error handling and error modal
 const errorModal = document.getElementById("error-modal");
+const divDelete = document.getElementById("div-delete-movement");
+const formDelete = document.getElementById("form-delete-movement");
+const idMovement = document.getElementById("id-movement");
+const yearMovement = document.getElementById("year-movement");
 
 function addStyleToTable(row) {
   let classValues = [
@@ -53,32 +57,22 @@ function createImporto(importo, valuta) {
   return importoValue;
 }
 
-function createDeleteButton(transactionId) {
+function createDeleteButton(transactionId, year) {
   let deleteButton = document.createElement("button");
   deleteButton.innerHTML = "Delete";
   deleteButton.classList.add(
     "px-6",
     "py-3",
     "font-medium",
-    "text-red-600",
-    "dark:text-red-500",
+    "text-blue-600",
+    "dark:text-blue-500",
     "hover:underline"
   );
 
   deleteButton.onclick = function () {
-    fetch("/api/transactions/" + transactionId, {
-      method: "DELETE",
-      credentials: "same-origin",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("Error deleting transaction");
-        // errorModal.classList.remove("hidden");
-      });
+    divDelete.classList.toggle("hidden");
+    idMovement.value = transactionId;
+    yearMovement.value = year;
   };
 
   return deleteButton;
@@ -120,7 +114,12 @@ function fillTable(data) {
     edit.classList.add("px-6", "py-3", "text-right");
 
     edit.appendChild(createEditLink(transactionId));
-    deleteTable.appendChild(createDeleteButton(transactionId));
+    deleteTable.appendChild(
+      createDeleteButton(
+        transactionId,
+        new Date(data[transactionId].data).getFullYear()
+      )
+    );
 
     row.appendChild(description);
     row.appendChild(amount);
@@ -228,3 +227,24 @@ function onLoad() {
       // errorModal.classList.remove("hidden");
     });
 }
+
+formDelete.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  console.log(yearMovement.value, idMovement.value);
+
+  fetch(`/api/transactions/${yearMovement.value}/${idMovement.value}`, {
+    method: "DELETE",
+    credentials: "same-origin",
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log("Error deleting transaction");
+      // errorModal.classList.remove("hidden");
+    });
+});

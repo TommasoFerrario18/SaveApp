@@ -26,14 +26,16 @@ export async function addExpense(expense, userId) {
 export async function deleteExpense(id, year, userId) {
   if (!userId || !db) return false;
 
-  let doc = await updateDoc(
-    doc(db, "users", userId, "transactions", year.toString()),
+  if (typeof year !== "string") year = year.toString();
+
+  let res = await updateDoc(
+    doc(db, "users", userId, "transactions", year),
     {
       [id]: deleteField(),
     }
   );
 
-  return doc.exists();
+  return res;
 }
 
 export async function updateExpense(expense, userId) {
