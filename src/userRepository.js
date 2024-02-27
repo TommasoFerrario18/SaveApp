@@ -1,3 +1,8 @@
+/**
+ * @file Manages user authentication and user data in the application.
+ * @module userRepository
+ */
+
 import { db } from "./firebase.js";
 import { auth } from "./firebase.js";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
@@ -7,6 +12,14 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
+/**
+ * Signs up a user with the provided email, password, and username.
+ *
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @param {string} username - The username of the user.
+ * @returns {Promise<string>} - A promise that resolves to the user UID.
+ */
 export async function signup(email, password, username) {
   let user_uid = null;
 
@@ -28,6 +41,13 @@ export async function signup(email, password, username) {
   return user_uid;
 }
 
+/**
+ * Logs in a user with the provided email and password.
+ *
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<string>} - A promise that resolves to the user UID.
+ */
 export async function login(email, password) {
   let user_uid = null;
 
@@ -44,8 +64,13 @@ export async function login(email, password) {
   return user_uid;
 }
 
-export function logout() {
-  signOut(auth)
+/**
+ * Logs out the currently authenticated user.
+ *
+ * @returns {Promise<string|Error>} - A promise that resolves to a success message or an error.
+ */
+export async function logout() {
+  await signOut(auth)
     .then(() => {
       return "User signed out successfully";
     })
@@ -54,10 +79,22 @@ export function logout() {
     });
 }
 
+/**
+ * Deletes a user from the database.
+ *
+ * @param {string} userId - The ID of the user to delete.
+ */
 export function deleteUser(userId) {
   deleteDoc(doc(db, "users", userId));
 }
 
+/**
+ * Creates a new user document in the database.
+ *
+ * @param {string} id - The ID of the user.
+ * @param {string} name - The username of the user.
+ * @param {string} email - The email of the user.
+ */
 async function createUser(id, name, email) {
   setDoc(doc(db, "users", id), {
     username: name,
